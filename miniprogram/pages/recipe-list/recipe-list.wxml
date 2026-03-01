@@ -1,0 +1,205 @@
+<!--recipe-list.wxml - 食谱列表页面模板-->
+<view class="page-container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-bar__input-wrapper">
+      <view class="search-bar__icon">🔍</view>
+      <input
+        class="search-bar__input"
+        type="text"
+        placeholder="搜索食谱"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <view class="search-bar__filter" bindtap="onOpenFilter">
+      <text class="search-bar__filter-icon">⚙</text>
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="category-tabs" scroll-x>
+    <view
+      class="category-tab {{currentCategory === 'all' ? 'category-tab--active' : ''}}"
+      data-id="all"
+      bindtap="onCategoryTap"
+    >
+      全部
+    </view>
+    <view
+      class="category-tab {{currentCategory === item.id ? 'category-tab--active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onCategoryTap"
+    >
+      <text class="category-tab__icon">{{item.icon}}</text>
+      <text class="category-tab__name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 食谱列表 -->
+  <view wx:else class="recipe-list">
+    <view wx:if="{{recipeList.length === 0}}" class="empty-state">
+      <text class="empty-state__icon">🍳</text>
+      <text class="empty-state__text">没有找到相关食谱</text>
+    </view>
+
+    <view
+      class="recipe-card"
+      wx:for="{{recipeList}}"
+      wx:key="id"
+      data-recipe="{{item}}"
+      data-index="{{index}}"
+      bindtap="onRecipeTap"
+    >
+      <view class="recipe-card__image">
+        <text class="recipe-card__placeholder">{{item.category === 'breakfast' ? '🌅' : item.category === 'lunch' ? '☀️' : item.category === 'dinner' ? '🌙' : '🍎'}}</text>
+        <view class="recipe-card__time">
+          <text class="recipe-card__time-icon">⏱</text>
+          <text class="recipe-card__time-value">{{item.time}}分钟</text>
+        </view>
+        <view
+          class="recipe-card__favorite"
+          data-recipe="{{item}}"
+          data-index="{{index}}"
+          catchtap="onFavoriteTap"
+        >
+          {{item.isFavorite ? '❤️' : '🤍'}}
+        </view>
+      </view>
+
+      <view class="recipe-card__content">
+        <view class="recipe-card__header">
+          <text class="recipe-card__title">{{item.name}}</text>
+          <view class="recipe-card__difficulty recipe-card__difficulty--{{item.difficulty}}">
+            {{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : '困难'}}
+          </view>
+        </view>
+
+        <view class="recipe-card__tags">
+          <view
+            class="recipe-tag"
+            wx:for="{{item.tags}}"
+            wx:for-item="tag"
+            wx:key="*this"
+          >
+            {{tag}}
+          </view>
+        </view>
+
+        <view class="recipe-card__nutrition">
+          <view class="nutrition-item">
+            <text class="nutrition-item__value">{{item.nutrition.calories}}</text>
+            <text class="nutrition-item__unit">kcal</text>
+          </view>
+          <view class="nutrition-item">
+            <text class="nutrition-item__value">{{item.nutrition.protein}}</text>
+            <text class="nutrition-item__unit">蛋白质</text>
+          </view>
+          <view class="nutrition-item">
+            <text class="nutrition-item__value">{{item.servings}}</text>
+            <text class="nutrition-item__unit">人份</text>
+          </view>
+        </view>
+
+        <view class="recipe-card__footer">
+          <text class="recipe-card__description">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view wx:if="{{showFilterPanel}}" class="filter-panel" catchtap="onCloseFilter">
+    <view class="filter-panel__content" catchtap="stopPropagation">
+      <view class="filter-panel__header">
+        <text class="filter-panel__title">筛选食谱</text>
+        <view class="filter-panel__close" bindtap="onCloseFilter">✕</view>
+      </view>
+
+      <view class="filter-panel__body">
+        <!-- 制作时间 -->
+        <view class="filter-section">
+          <text class="filter-section__title">制作时间</text>
+          <view class="filter-options">
+            <view
+              class="filter-option {{filters.maxTime === null ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-time="{{null}}"
+            >
+              不限
+            </view>
+            <view
+              class="filter-option {{filters.maxTime === 15 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-time="{{15}}"
+            >
+              ≤15分钟
+            </view>
+            <view
+              class="filter-option {{filters.maxTime === 30 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-time="{{30}}"
+            >
+              ≤30分钟
+            </view>
+            <view
+              class="filter-option {{filters.maxTime === 60 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-time="{{60}}"
+            >
+              ≤60分钟
+            </view>
+          </view>
+        </view>
+
+        <!-- 难度 -->
+        <view class="filter-section">
+          <text class="filter-section__title">难度</text>
+          <view class="filter-options">
+            <view
+              class="filter-option {{filters.difficulty === null ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-difficulty="{{null}}"
+            >
+              不限
+            </view>
+            <view
+              class="filter-option {{filters.difficulty === 'easy' ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-difficulty="easy"
+            >
+              简单
+            </view>
+            <view
+              class="filter-option {{filters.difficulty === 'medium' ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-difficulty="medium"
+            >
+              中等
+            </view>
+            <view
+              class="filter-option {{filters.difficulty === 'hard' ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-difficulty="hard"
+            >
+              困难
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-panel__footer">
+        <view class="filter-btn filter-btn--reset" bindtap="onResetFilter">重置</view>
+        <view class="filter-btn filter-btn--confirm" bindtap="onCloseFilter">完成</view>
+      </view>
+    </view>
+  </view>
+</view>

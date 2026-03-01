@@ -1,0 +1,144 @@
+/**
+ * nutrition-bar.wxss - 营养进度条组件样式
+ */
+
+.nutrition-bar {
+  width: 100%;
+}
+
+/* 头部 */
+.nutrition-bar__header {
+  margin-bottom: 12rpx;
+}
+
+.nutrition-bar__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.nutrition-bar__label {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.nutrition-bar__status {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.nutrition-bar__status--completed {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.nutrition-bar__status--near {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.nutrition-bar__status--progress {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+}
+
+.nutrition-bar__status--low {
+  background-color: rgba(158, 158, 158, 0.1);
+  color: #9E9E9E;
+}
+
+.nutrition-bar__status--empty {
+  background-color: rgba(224, 224, 224, 0.3);
+  color: #CCCCCC;
+}
+
+/* 数值显示 */
+.nutrition-bar__values {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.nutrition-bar__value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.nutrition-bar__unit {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.nutrition-bar__percentage {
+  margin-left: auto;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.nutrition-bar__percentage--completed {
+  color: #4CAF50;
+}
+
+.nutrition-bar__percentage--near {
+  color: #FF9800;
+}
+
+.nutrition-bar__percentage--progress {
+  color: #2196F3;
+}
+
+.nutrition-bar__percentage--low {
+  color: #9E9E9E;
+}
+
+/* 进度条轨道 */
+.nutrition-bar__track {
+  width: 100%;
+  background-color: #F0F0F0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+/* 进度条填充 */
+.nutrition-bar__fill {
+  height: 100%;
+  border-radius: 4rpx;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.nutrition-bar__fill--completed {
+  background-color: #4CAF50;
+}
+
+.nutrition-bar__fill--near {
+  background-color: #FF9800;
+}
+
+.nutrition-bar__fill--progress {
+  background-color: #2196F3;
+}
+
+.nutrition-bar__fill--low {
+  background-color: #9E9E9E;
+}
+
+.nutrition-bar__fill--empty {
+  background-color: #E0E0E0;
+}
+
+/* 小尺寸模式 */
+.nutrition-bar--small .nutrition-bar__label {
+  font-size: 24rpx;
+}
+
+.nutrition-bar--small .nutrition-bar__value {
+  font-size: 26rpx;
+}
+
+.nutrition-bar--small .nutrition-bar__track {
+  height: 6rpx !important;
+}

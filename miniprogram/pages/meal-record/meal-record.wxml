@@ -1,0 +1,163 @@
+<!--meal-record.wxml - 餐食记录页面模板-->
+<wxs src="../../utils/math.wxs" module="math" />
+<view class="page-container">
+  <!-- 头部 -->
+  <view class="meal-header">
+    <view class="meal-header__icon">{{mealType === 'breakfast' ? '🌅' : mealType === 'lunch' ? '☀️' : mealType === 'dinner' ? '🌙' : '🍎'}}</view>
+    <view class="meal-header__info">
+      <text class="meal-header__title">{{mealTypeName}}</text>
+      <text class="meal-header__subtitle">{{foodList.length}} 种食物</text>
+    </view>
+    <view class="meal-header__total">
+      <text class="meal-header__total-value">{{totalNutrition.calories}}</text>
+      <text class="meal-header__total-unit">kcal</text>
+    </view>
+  </view>
+
+  <!-- 营养概览 -->
+  <view class="nutrition-overview">
+    <view class="nutrition-overview__item">
+      <text class="nutrition-overview__label">蛋白质</text>
+      <text class="nutrition-overview__value">{{totalNutrition.protein}}</text>
+      <text class="nutrition-overview__unit">g</text>
+    </view>
+    <view class="nutrition-overview__divider"></view>
+    <view class="nutrition-overview__item">
+      <text class="nutrition-overview__label">碳水</text>
+      <text class="nutrition-overview__value">{{totalNutrition.carbs}}</text>
+      <text class="nutrition-overview__unit">g</text>
+    </view>
+    <view class="nutrition-overview__divider"></view>
+    <view class="nutrition-overview__item">
+      <text class="nutrition-overview__label">脂肪</text>
+      <text class="nutrition-overview__value">{{totalNutrition.fat}}</text>
+      <text class="nutrition-overview__unit">g</text>
+    </view>
+  </view>
+
+  <!-- 食物列表 -->
+  <view class="food-list-section">
+    <view class="food-list-section__header">
+      <text class="food-list-section__title">食物记录</text>
+      <view class="food-list-section__action" bindtap="onAddFood">
+        <text class="food-list-section__add-icon">+</text>
+        <text class="food-list-section__add-text">添加</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{foodList.length === 0}}" class="empty-state">
+      <text class="empty-state__icon">🍽</text>
+      <text class="empty-state__text">还没有添加食物</text>
+      <text class="empty-state__hint">点击右上角添加按钮开始记录</text>
+    </view>
+
+    <!-- 食物列表 -->
+    <view wx:else class="food-list">
+      <view
+        class="food-record-item"
+        wx:for="{{foodList}}"
+        wx:key="index"
+      >
+        <view class="food-record-item__info">
+          <text class="food-record-item__name">{{item.name}}</text>
+          <text class="food-record-item__amount">{{item.amount}}g</text>
+        </view>
+        <view class="food-record-item__nutrition">
+          <text class="food-record-item__calories">{{item.calories}}kcal</text>
+        </view>
+        <view
+          class="food-record-item__delete"
+          data-index="{{index}}"
+          bindtap="onDeleteFood"
+        >
+          🗑
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-actions">
+    <view class="action-btn action-btn--secondary" bindtap="onShare">
+      <text class="action-btn__icon">📤</text>
+      <text class="action-btn__text">分享</text>
+    </view>
+    <view class="action-btn action-btn--primary" bindtap="onAddFood">
+      <text class="action-btn__icon">+</text>
+      <text class="action-btn__text">添加食物</text>
+    </view>
+  </view>
+
+  <!-- 添加食物对话框 -->
+  <view wx:if="{{showAmountDialog}}" class="dialog-overlay" bindtap="closeDialog">
+    <view class="dialog" catchtap="">
+      <view class="dialog__header">
+        <text class="dialog__title">{{selectedFood.name}}</text>
+        <view class="dialog__close" bindtap="closeDialog">✕</view>
+      </view>
+
+      <view class="dialog__body">
+        <!-- 食物信息 -->
+        <view class="food-info">
+          <text class="food-info__label">每100克含量</text>
+          <view class="food-info__values">
+            <text class="food-info__item">热量 {{selectedFood.calories}}kcal</text>
+            <text class="food-info__item">蛋白质 {{selectedFood.protein}}g</text>
+            <text class="food-info__item">碳水 {{selectedFood.carbs}}g</text>
+            <text class="food-info__item">脂肪 {{selectedFood.fat}}g</text>
+          </view>
+        </view>
+
+        <!-- 份量输入 -->
+        <view class="amount-input">
+          <text class="amount-input__label">食用份量（克）</text>
+          <input
+            class="amount-input__field"
+            type="digit"
+            value="{{inputAmount}}"
+            bindinput="onAmountChange"
+          />
+        </view>
+
+        <!-- 快速选择 -->
+        <view class="quick-amount">
+          <text class="quick-amount__label">快速选择</text>
+          <view class="quick-amount__options">
+            <view
+              class="quick-amount__option {{inputAmount === 50 ? 'quick-amount__option--active' : ''}}"
+              bindtap="onQuickAmount"
+              data-amount="{{50}}"
+            >50g</view>
+            <view
+              class="quick-amount__option {{inputAmount === 100 ? 'quick-amount__option--active' : ''}}"
+              bindtap="onQuickAmount"
+              data-amount="{{100}}"
+            >100g</view>
+            <view
+              class="quick-amount__option {{inputAmount === 150 ? 'quick-amount__option--active' : ''}}"
+              bindtap="onQuickAmount"
+              data-amount="{{150}}"
+            >150g</view>
+            <view
+              class="quick-amount__option {{inputAmount === 200 ? 'quick-amount__option--active' : ''}}"
+              bindtap="onQuickAmount"
+              data-amount="{{200}}"
+            >200g</view>
+          </view>
+        </view>
+
+        <!-- 预计营养 -->
+        <view class="preview-nutrition">
+          <text class="preview-nutrition__title">预计摄入</text>
+          <text class="preview-nutrition__calories">{{math.round(selectedFood.calories * inputAmount / 100)}} kcal</text>
+        </view>
+      </view>
+
+      <view class="dialog__footer">
+        <view class="dialog-btn dialog-btn--cancel" bindtap="closeDialog">取消</view>
+        <view class="dialog-btn dialog-btn--confirm" bindtap="onConfirmAdd">确认添加</view>
+      </view>
+    </view>
+  </view>
+</view>

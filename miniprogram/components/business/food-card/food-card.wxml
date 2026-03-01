@@ -1,0 +1,62 @@
+<!--food-card.wxml - 食物卡片组件模板-->
+<view
+  class="food-card food-card--{{mode}} {{clickable ? 'food-card--clickable' : ''}}"
+  bindtap="handleTap"
+  bindlongpress="handleLongPress"
+>
+  <!-- 默认模式 -->
+  <view wx:if="{{mode === 'default'}}" class="food-card__content">
+    <!-- 食物名称 -->
+    <view class="food-card__header">
+      <text class="food-card__name">{{food.name}}</text>
+      <text wx:if="{{food.unit}}" class="food-card__unit">每100{{food.unit}}</text>
+    </view>
+
+    <!-- 热量显示 -->
+    <view class="food-card__calories">
+      <text class="food-card__calories-value">{{nutritionInfo ? nutritionInfo.calories : food.calories}}</text>
+      <text class="food-card__calories-unit">kcal</text>
+      <text wx:if="{{amount !== 100}}" class="food-card__amount">({{amount}}g)</text>
+    </view>
+
+    <!-- 营养信息 -->
+    <view wx:if="{{showNutrition}}" class="food-card__nutrition">
+      <view class="food-card__nutrition-item">
+        <text class="food-card__nutrition-label">蛋白质</text>
+        <text class="food-card__nutrition-value">{{nutritionInfo ? nutritionInfo.protein : food.protein}}g</text>
+      </view>
+      <view class="food-card__nutrition-item">
+        <text class="food-card__nutrition-label">碳水</text>
+        <text class="food-card__nutrition-value">{{nutritionInfo ? nutritionInfo.carbs : food.carbs}}g</text>
+      </view>
+      <view class="food-card__nutrition-item">
+        <text class="food-card__nutrition-label">脂肪</text>
+        <text class="food-card__nutrition-value">{{nutritionInfo ? nutritionInfo.fat : food.fat}}g</text>
+      </view>
+    </view>
+
+    <!-- 分类标签 -->
+    <view wx:if="{{food.category}}" class="food-card__tag">
+      <text class="food-card__tag-text">{{food.category}}</text>
+    </view>
+  </view>
+
+  <!-- 紧凑模式 -->
+  <view wx:elif="{{mode === 'compact'}}" class="food-card__content food-card__content--compact">
+    <view class="food-card__main">
+      <text class="food-card__name">{{food.name}}</text>
+      <text class="food-card__calories-text">{{nutritionInfo ? nutritionInfo.calories : food.calories}}kcal</text>
+    </view>
+    <view wx:if="{{showNutrition}}" class="food-card__nutrition-compact">
+      <text class="food-card__nutrition-compact-item">蛋白质{{nutritionInfo ? nutritionInfo.protein : food.protein}}g</text>
+      <text class="food-card__nutrition-compact-item">碳水{{nutritionInfo ? nutritionInfo.carbs : food.carbs}}g</text>
+      <text class="food-card__nutrition-compact-item">脂肪{{nutritionInfo ? nutritionInfo.fat : food.fat}}g</text>
+    </view>
+  </view>
+
+  <!-- 精简模式 -->
+  <view wx:elif="{{mode === 'minimal'}}" class="food-card__content food-card__content--minimal">
+    <text class="food-card__name food-card__name--minimal">{{food.name}}</text>
+    <text class="food-card__calories-text">{{nutritionInfo ? nutritionInfo.calories : food.calories}}kcal / {{amount}}g</text>
+  </view>
+</view>

@@ -1,0 +1,307 @@
+<!--profile.wxml - 个人资料页面模板-->
+<view class="page-container">
+  <!-- 头部卡片 -->
+  <view class="profile-header">
+    <view class="profile-header__bg"></view>
+    <view class="profile-header__content">
+      <view class="profile-avatar">
+        <text class="profile-avatar__icon">👤</text>
+      </view>
+      <view class="profile-info">
+        <text class="profile-info__name">{{userProfile.name || '健康达人'}}</text>
+        <text class="profile-info__goal">{{userProfile.goal ? (userProfile.goal === 'lose' ? '减重' : userProfile.goal === 'maintain' ? '维持' : '增重') : ''}}</text>
+      </view>
+      <view class="profile-header__edit" bindtap="onEdit">
+        <text class="edit-icon">✏️</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 身体数据卡片 -->
+  <view class="card body-card">
+    <view class="card-title">身体数据</view>
+
+    <view class="body-stats">
+      <view class="body-stat">
+        <text class="body-stat__value">{{userProfile.height}}</text>
+        <text class="body-stat__label">身高(cm)</text>
+      </view>
+      <view class="body-stat">
+        <text class="body-stat__value">{{userProfile.weight}}</text>
+        <text class="body-stat__label">体重(kg)</text>
+      </view>
+      <view class="body-stat">
+        <text class="body-stat__value">{{userProfile.age}}</text>
+        <text class="body-stat__label">年龄</text>
+      </view>
+      <view class="body-stat">
+        <text class="body-stat__value">{{genderNames[userProfile.gender] || '男'}}</text>
+        <text class="body-stat__label">性别</text>
+      </view>
+    </view>
+
+    <!-- BMI -->
+    <view class="bmi-section">
+      <view class="bmi-header">
+        <text class="bmi-header__title">BMI指数</text>
+        <text class="bmi-header__value" style="color: {{bmiCategory.color}};">{{metrics.bmi}}</text>
+      </view>
+      <view class="bmi-bar">
+        <view
+          class="bmi-fill"
+          style="left: {{(metrics.bmi / 40) * 100}}%; background-color: {{bmiCategory.color}};"
+        ></view>
+        <view class="bmi-ranges">
+          <view class="bmi-range bmi-range--underweight" style="left: 0; width: 46.25%;"></view>
+          <view class="bmi-range bmi-range--normal" style="left: 46.25%; width: 13.75%;"></view>
+          <view class="bmi-range bmi-range--overweight" style="left: 60%; width: 10%;"></view>
+          <view class="bmi-range bmi-range--obese" style="left: 70%; width: 30%;"></view>
+        </view>
+      </view>
+      <text class="bmi-status" style="color: {{bmiCategory.color}};">{{bmiCategory.name}}</text>
+      <text class="bmi-advice">{{bmiCategory.advice}}</text>
+    </view>
+
+    <!-- 理想体重 -->
+    <view class="ideal-weight">
+      <text class="ideal-weight__label">理想体重范围</text>
+      <text class="ideal-weight__value" wx:if="{{metrics.idealWeightRange}}">{{metrics.idealWeightRange.min}} - {{metrics.idealWeightRange.max}} kg</text>
+    </view>
+  </view>
+
+  <!-- 代谢数据卡片 -->
+  <view class="card metabolism-card">
+    <view class="card-title">代谢数据</view>
+
+    <view class="metabolism-stats">
+      <view class="metabolism-item">
+        <text class="metabolism-item__label">基础代谢率(BMR)</text>
+        <text class="metabolism-item__value">{{metrics.bmr}}</text>
+        <text class="metabolism-item__unit">kcal/天</text>
+      </view>
+      <view class="metabolism-item">
+        <text class="metabolism-item__label">每日总消耗(TDEE)</text>
+        <text class="metabolism-item__value">{{metrics.tdee}}</text>
+        <text class="metabolism-item__unit">kcal/天</text>
+      </view>
+      <view class="metabolism-item">
+        <text class="metabolism-item__label">活动水平</text>
+        <text class="metabolism-item__value">{{activityLevelNames[userProfile.activityLevel] || '中度活动'}}</text>
+      </view>
+    </view>
+
+    <!-- 营养目标 -->
+    <view class="nutrition-targets">
+      <view class="nutrition-targets__title">每日营养目标</view>
+      <view class="target-grid">
+        <view class="target-item">
+          <text class="target-item__value">{{userProfile.dailyCalorieTarget}}</text>
+          <text class="target-item__label">热量(kcal)</text>
+        </view>
+        <view class="target-item">
+          <text class="target-item__value">{{userProfile.proteinTarget}}</text>
+          <text class="target-item__label">蛋白质(g)</text>
+        </view>
+        <view class="target-item">
+          <text class="target-item__value">{{userProfile.carbsTarget}}</text>
+          <text class="target-item__label">碳水(g)</text>
+        </view>
+        <view class="target-item">
+          <text class="target-item__value">{{userProfile.fatTarget}}</text>
+          <text class="target-item__label">脂肪(g)</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 目标进度卡片 -->
+  <view wx:if="{{userProfile.targetWeight !== userProfile.weight}}" class="card goal-card">
+    <view class="card-title">目标进度</view>
+
+    <view class="goal-info">
+      <view class="goal-current">
+        <text class="goal-current__label">当前体重</text>
+        <text class="goal-current__value">{{userProfile.weight}} kg</text>
+      </view>
+      <view class="goal-arrow">→</view>
+      <view class="goal-target">
+        <text class="goal-target__label">目标体重</text>
+        <text class="goal-target__value">{{userProfile.targetWeight}} kg</text>
+      </view>
+    </view>
+
+    <view wx:if="{{metrics.targetTime}}" class="goal-time">
+      <text class="goal-time__text">预计需要</text>
+      <text class="goal-time__value">{{metrics.targetTime.weeks}}</text>
+      <text class="goal-time__unit">周</text>
+    </view>
+  </view>
+
+  <!-- 设置列表 -->
+  <view class="settings-section">
+    <view class="settings-list">
+      <view class="settings-item" bindtap="onViewReport">
+        <view class="settings-item__left">
+          <text class="settings-item__icon">📊</text>
+          <text class="settings-item__label">健康报告</text>
+        </view>
+        <view class="settings-item__arrow">›</view>
+      </view>
+      <view class="settings-item" bindtap="onReset">
+        <view class="settings-item__left">
+          <text class="settings-item__icon">🔄</text>
+          <text class="settings-item__label">重置数据</text>
+        </view>
+        <view class="settings-item__arrow">›</view>
+      </view>
+      <view class="settings-item" bindtap="onFeedback">
+        <view class="settings-item__left">
+          <text class="settings-item__icon">💬</text>
+          <text class="settings-item__label">反馈建议</text>
+        </view>
+        <view class="settings-item__arrow">›</view>
+      </view>
+      <view class="settings-item" bindtap="onAbout">
+        <view class="settings-item__left">
+          <text class="settings-item__icon">ℹ️</text>
+          <text class="settings-item__label">关于我们</text>
+        </view>
+        <view class="settings-item__arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view wx:if="{{editMode}}" class="edit-overlay" bindtap="onCancel">
+    <view class="edit-dialog" catchtap="stopPropagation">
+      <view class="edit-dialog__header">
+        <text class="edit-dialog__title">编辑资料</text>
+        <view class="edit-dialog__close" bindtap="onCancel">✕</view>
+      </view>
+
+      <scroll-view class="edit-dialog__body" scroll-y>
+        <!-- 基本信息 -->
+        <view class="form-section">
+          <text class="form-section__title">基本信息</text>
+
+          <view class="form-item">
+            <text class="form-item__label">昵称</text>
+            <input
+              class="form-item__input"
+              type="text"
+              placeholder="请输入昵称"
+              value="{{formData.name}}"
+              data-field="name"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">性别</text>
+            <view class="form-options">
+              <view
+                class="form-option {{formData.gender === 'male' ? 'form-option--active' : ''}}"
+                data-value="male"
+                bindtap="onGenderSelect"
+              >男</view>
+              <view
+                class="form-option {{formData.gender === 'female' ? 'form-option--active' : ''}}"
+                data-value="female"
+                bindtap="onGenderSelect"
+              >女</view>
+            </view>
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">年龄</text>
+            <input
+              class="form-item__input"
+              type="number"
+              placeholder="请输入年龄"
+              value="{{formData.age}}"
+              data-field="age"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">身高(cm)</text>
+            <input
+              class="form-item__input"
+              type="number"
+              placeholder="请输入身高"
+              value="{{formData.height}}"
+              data-field="height"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">体重(kg)</text>
+            <input
+              class="form-item__input"
+              type="digit"
+              placeholder="请输入体重"
+              value="{{formData.weight}}"
+              data-field="weight"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">目标体重(kg)</text>
+            <input
+              class="form-item__input"
+              type="digit"
+              placeholder="请输入目标体重"
+              value="{{formData.targetWeight}}"
+              data-field="targetWeight"
+              bindinput="onInputChange"
+            />
+          </view>
+        </view>
+
+        <!-- 健康目标 -->
+        <view class="form-section">
+          <text class="form-section__title">健康目标</text>
+
+          <view class="form-item">
+            <text class="form-item__label">目标类型</text>
+            <view class="goal-options">
+              <view
+                wx:for="{{goalOptions}}"
+                wx:key="value"
+                class="goal-option {{formData.goal === item.value ? 'goal-option--active' : ''}}"
+                style="{{formData.goal === item.value ? 'background-color: ' + item.color : ''}}"
+                data-value="{{item.value}}"
+                bindtap="onGoalSelect"
+              >
+                {{item.label}}
+              </view>
+            </view>
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">活动水平</text>
+            <view class="activity-options">
+              <view
+                wx:for="{{activityOptions}}"
+                wx:key="value"
+                class="activity-option {{formData.activityLevel === item.value ? 'activity-option--active' : ''}}"
+                data-value="{{item.value}}"
+                bindtap="onActivitySelect"
+              >
+                {{item.label}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="edit-dialog__footer">
+        <view class="dialog-btn dialog-btn--cancel" bindtap="onCancel">取消</view>
+        <view class="dialog-btn dialog-btn--confirm" bindtap="onSave">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

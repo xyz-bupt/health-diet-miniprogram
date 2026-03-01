@@ -1,0 +1,149 @@
+<!--food-search.wxml - 食物搜索页面模板-->
+<view class="page-container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-bar__input-wrapper">
+      <view class="search-bar__icon">🔍</view>
+      <input
+        class="search-bar__input"
+        type="text"
+        placeholder="搜索食物名称"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+      <view wx:if="{{keyword}}" class="search-bar__clear" bindtap="onClearSearch">✕</view>
+    </view>
+    <view class="search-bar__filter" bindtap="onToggleFilter">
+      <text class="search-bar__filter-icon">⚙</text>
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="category-tabs" scroll-x>
+    <view
+      class="category-tab {{currentCategory === item.id ? 'category-tab--active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onCategoryTap"
+    >
+      <text class="category-tab__icon">{{item.icon}}</text>
+      <text class="category-tab__name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">搜索中...</text>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:elif="{{showResults}}" class="search-results">
+    <view wx:if="{{searchResults.length === 0}}" class="empty-state">
+      <text class="empty-state__icon">🍽</text>
+      <text class="empty-state__text">未找到相关食物</text>
+      <text class="empty-state__hint">试试其他关键词或分类</text>
+    </view>
+
+    <view wx:else class="food-list">
+      <food-card
+        wx:for="{{searchResults}}"
+        wx:key="id"
+        food="{{item}}"
+        mode="compact"
+        bind:tap="onFoodTap"
+      />
+    </view>
+  </view>
+
+  <!-- 热门食物（未搜索时显示） -->
+  <view wx:else class="popular-section">
+    <view class="section-header">
+      <text class="section-header__title">热门食物</text>
+    </view>
+
+    <view class="food-grid">
+      <view
+        class="food-grid-item"
+        wx:for="{{popularFoods}}"
+        wx:key="id"
+        bindtap="onFoodTap"
+        data-food="{{item}}"
+      >
+        <view class="food-grid-item__name">{{item.name}}</view>
+        <view class="food-grid-item__calories">{{item.calories}}kcal/100g</view>
+      </view>
+    </view>
+
+    <!-- 分类快捷入口 -->
+    <view class="section-header">
+      <text class="section-header__title">按分类浏览</text>
+    </view>
+
+    <view class="category-grid">
+      <view
+        class="category-grid-item"
+        wx:for="{{categories}}"
+        wx:key="id"
+        bindtap="onCategoryTap"
+        data-id="{{item.id}}"
+      >
+        <text class="category-grid-item__icon">{{item.icon}}</text>
+        <text class="category-grid-item__name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view wx:if="{{showFilterPanel}}" class="filter-panel" catchtap="onToggleFilter">
+    <view class="filter-panel__content" catchtap="stopPropagation">
+      <view class="filter-panel__header">
+        <text class="filter-panel__title">筛选条件</text>
+        <view class="filter-panel__close" bindtap="onToggleFilter">✕</view>
+      </view>
+
+      <view class="filter-panel__body">
+        <view class="filter-section">
+          <text class="filter-section__title">最大热量</text>
+          <view class="filter-options">
+            <view
+              class="filter-option {{filters.maxCalories === null ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-calories="{{null}}"
+            >
+              不限
+            </view>
+            <view
+              class="filter-option {{filters.maxCalories === 50 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-calories="{{50}}"
+            >
+              ≤50kcal
+            </view>
+            <view
+              class="filter-option {{filters.maxCalories === 100 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-calories="{{100}}"
+            >
+              ≤100kcal
+            </view>
+            <view
+              class="filter-option {{filters.maxCalories === 200 ? 'filter-option--active' : ''}}"
+              bindtap="onApplyFilter"
+              data-max-calories="{{200}}"
+            >
+              ≤200kcal
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-panel__footer">
+        <view class="filter-btn filter-btn--reset" bindtap="onResetFilter">重置</view>
+        <view class="filter-btn filter-btn--confirm" bindtap="onToggleFilter">完成</view>
+      </view>
+    </view>
+  </view>
+</view>

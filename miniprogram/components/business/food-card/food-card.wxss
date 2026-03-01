@@ -1,0 +1,165 @@
+/**
+ * food-card.wxss - 食物卡片组件样式
+ */
+
+.food-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.food-card--clickable {
+  cursor: pointer;
+}
+
+.food-card--clickable:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+}
+
+.food-card__content {
+  padding: 24rpx;
+  position: relative;
+}
+
+.food-card__content--compact {
+  padding: 16rpx 24rpx;
+}
+
+.food-card__content--minimal {
+  padding: 12rpx 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 头部 */
+.food-card__header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+}
+
+.food-card__name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-right: 12rpx;
+}
+
+.food-card__name--minimal {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.food-card__unit {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+/* 热量 */
+.food-card__calories {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20rpx;
+}
+
+.food-card__calories-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #FF6B6B;
+  line-height: 1;
+}
+
+.food-card__calories-unit {
+  font-size: 24rpx;
+  color: #999999;
+  margin-left: 8rpx;
+}
+
+.food-card__amount {
+  font-size: 22rpx;
+  color: #4CAF50;
+  margin-left: 8rpx;
+}
+
+.food-card__calories-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF6B6B;
+}
+
+/* 营养信息 */
+.food-card__nutrition {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.food-card__nutrition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.food-card__nutrition-label {
+  font-size: 22rpx;
+  color: #999999;
+  margin-bottom: 8rpx;
+}
+
+.food-card__nutrition-value {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.food-card__nutrition-compact {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 12rpx;
+}
+
+.food-card__nutrition-compact-item {
+  font-size: 22rpx;
+  color: #666666;
+}
+
+/* 标签 */
+.food-card__tag {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 20rpx;
+  padding: 4rpx 12rpx;
+}
+
+.food-card__tag-text {
+  font-size: 20rpx;
+  color: #4CAF50;
+}
+
+/* 紧凑模式 */
+.food-card--compact .food-card__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.food-card--compact .food-card__name {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+/* 精简模式 */
+.food-card--minimal {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+}

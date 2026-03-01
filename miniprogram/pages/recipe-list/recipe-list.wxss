@@ -1,0 +1,397 @@
+/**
+ * pages/recipe-list/recipe-list.wxss - 食谱列表页面样式
+ */
+
+.page-container {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding-bottom: 40rpx;
+}
+
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #ffffff;
+  gap: 16rpx;
+}
+
+.search-bar__input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #F5F5F5;
+  border-radius: 24rpx;
+  padding: 12rpx 24rpx;
+}
+
+.search-bar__icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.search-bar__input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.search-bar__filter {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F5F5;
+  border-radius: 12rpx;
+}
+
+.search-bar__filter-icon {
+  font-size: 28rpx;
+}
+
+/* 分类标签 */
+.category-tabs {
+  display: flex;
+  white-space: nowrap;
+  padding: 16rpx 24rpx;
+  background-color: #ffffff;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.category-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  margin-right: 16rpx;
+  background-color: #F5F5F5;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666666;
+  transition: all 0.2s ease;
+}
+
+.category-tab--active {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.category-tab__icon {
+  font-size: 22rpx;
+  margin-right: 6rpx;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #E0E0E0;
+  border-top-color: #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 食谱列表 */
+.recipe-list {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-state__icon {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-state__text {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+/* 食谱卡片 */
+.recipe-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.recipe-card__image {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9F9F9;
+}
+
+.recipe-card__placeholder {
+  font-size: 64rpx;
+}
+
+.recipe-card__time {
+  position: absolute;
+  top: 12rpx;
+  left: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 6rpx 12rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 12rpx;
+}
+
+.recipe-card__time-icon {
+  font-size: 18rpx;
+}
+
+.recipe-card__time-value {
+  font-size: 20rpx;
+  color: #ffffff;
+}
+
+.recipe-card__favorite {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  font-size: 28rpx;
+  filter: drop-shadow(0 1rpx 2rpx rgba(0, 0, 0, 0.3));
+}
+
+.recipe-card__content {
+  flex: 1;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.recipe-card__title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  line-height: 1.4;
+  flex: 1;
+  margin-right: 12rpx;
+}
+
+.recipe-card__difficulty {
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  white-space: nowrap;
+}
+
+.recipe-card__difficulty--easy {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.recipe-card__difficulty--medium {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.recipe-card__difficulty--hard {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #F44336;
+}
+
+/* 标签 */
+.recipe-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.recipe-tag {
+  padding: 4rpx 12rpx;
+  background-color: #F5F5F5;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  color: #666666;
+}
+
+/* 营养信息 */
+.recipe-card__nutrition {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.nutrition-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.nutrition-item__value {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #FF6B6B;
+}
+
+.nutrition-item__unit {
+  font-size: 20rpx;
+  color: #999999;
+}
+
+/* 底部 */
+.recipe-card__footer {
+  margin-top: auto;
+}
+
+.recipe-card__description {
+  font-size: 22rpx;
+  color: #999999;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 筛选面板 */
+.filter-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.filter-panel__content {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+  max-height: 70vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.filter-panel__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.filter-panel__close {
+  font-size: 32rpx;
+  color: #999999;
+  padding: 8rpx;
+}
+
+.filter-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24rpx;
+}
+
+.filter-section {
+  margin-bottom: 32rpx;
+}
+
+.filter-section__title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.filter-option {
+  padding: 12rpx 24rpx;
+  background-color: #F5F5F5;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.filter-option--active {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.filter-panel__footer {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.filter-btn {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.filter-btn--reset {
+  background-color: #F5F5F5;
+  color: #666666;
+}
+
+.filter-btn--confirm {
+  background-color: #4CAF50;
+  color: #ffffff;
+}

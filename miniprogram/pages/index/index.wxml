@@ -1,0 +1,187 @@
+<!--index.wxml - 首页模板-->
+<wxs src="../../utils/math.wxs" module="math" />
+<view class="page-container">
+  <!-- 头部 -->
+  <view class="index-header">
+    <view class="index-header__date">{{currentDate}}</view>
+    <view class="index-header__title">今日营养摄入</view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <view wx:else class="index-content">
+    <!-- 健康评分卡片 -->
+    <view class="card score-card">
+      <view class="score-card__header">
+        <text class="score-card__title">今日健康评分</text>
+        <text class="score-card__target">目标: {{nutritionTargets.calories}}kcal</text>
+      </view>
+      <view class="score-card__body">
+        <view class="score-ring">
+          <view class="score-ring__inner" style="border-color: {{healthScore.color}};">
+            <text class="score-ring__value" style="color: {{healthScore.color}};">{{healthScore.score}}</text>
+            <text class="score-ring__label">分</text>
+          </view>
+        </view>
+        <view class="score-info">
+          <view class="score-info__item">
+            <text class="score-info__label">评价</text>
+            <text class="score-info__value" style="color: {{healthScore.color}};">{{healthScore.text}}</text>
+          </view>
+          <view class="score-info__item">
+            <text class="score-info__label">已摄入</text>
+            <text class="score-info__value">{{todayNutrition.total.calories}}</text>
+            <text class="score-info__unit">kcal</text>
+          </view>
+          <view class="score-info__item">
+            <text class="score-info__label">剩余</text>
+            <text class="score-info__value {{remainingCalories < 0 ? 'score-info__value--warning' : ''}}">{{remainingCalories}}</text>
+            <text class="score-info__unit">kcal</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营养素进度 -->
+    <view class="card nutrition-card">
+      <view class="card-title">营养摄入进度</view>
+      <view class="nutrition-list">
+        <!-- 热量 -->
+        <view class="nutrition-item">
+          <view class="nutrition-item__header">
+            <text class="nutrition-item__name">热量</text>
+            <text class="nutrition-item__values">{{todayNutrition.total.calories}} / {{nutritionTargets.calories}} kcal</text>
+          </view>
+          <view class="nutrition-item__bar">
+            <view
+              class="nutrition-item__fill"
+              style="width: {{math.progress(todayNutrition.total.calories, nutritionTargets.calories)}}%; background-color: {{todayNutrition.total.calories > nutritionTargets.calories ? '#F44336' : '#FF6B6B'}};"
+            ></view>
+          </view>
+        </view>
+
+        <!-- 蛋白质 -->
+        <view class="nutrition-item">
+          <view class="nutrition-item__header">
+            <text class="nutrition-item__name">蛋白质</text>
+            <text class="nutrition-item__values">{{todayNutrition.total.protein}} / {{nutritionTargets.protein}} g</text>
+          </view>
+          <view class="nutrition-item__bar">
+            <view
+              class="nutrition-item__fill nutrition-item__fill--protein"
+              style="width: {{math.progress(todayNutrition.total.protein, nutritionTargets.protein)}}%;"
+            ></view>
+          </view>
+        </view>
+
+        <!-- 碳水化合物 -->
+        <view class="nutrition-item">
+          <view class="nutrition-item__header">
+            <text class="nutrition-item__name">碳水化合物</text>
+            <text class="nutrition-item__values">{{todayNutrition.total.carbs}} / {{nutritionTargets.carbs}} g</text>
+          </view>
+          <view class="nutrition-item__bar">
+            <view
+              class="nutrition-item__fill nutrition-item__fill--carbs"
+              style="width: {{math.progress(todayNutrition.total.carbs, nutritionTargets.carbs)}}%;"
+            ></view>
+          </view>
+        </view>
+
+        <!-- 脂肪 -->
+        <view class="nutrition-item">
+          <view class="nutrition-item__header">
+            <text class="nutrition-item__name">脂肪</text>
+            <text class="nutrition-item__values">{{todayNutrition.total.fat}} / {{nutritionTargets.fat}} g</text>
+          </view>
+          <view class="nutrition-item__bar">
+            <view
+              class="nutrition-item__fill nutrition-item__fill--fat"
+              style="width: {{math.progress(todayNutrition.total.fat, nutritionTargets.fat)}}%;"
+            ></view>
+          </view>
+        </view>
+
+        <!-- 膳食纤维 -->
+        <view class="nutrition-item">
+          <view class="nutrition-item__header">
+            <text class="nutrition-item__name">膳食纤维</text>
+            <text class="nutrition-item__values">{{todayNutrition.total.fiber}} / {{nutritionTargets.fiber}} g</text>
+          </view>
+          <view class="nutrition-item__bar">
+            <view
+              class="nutrition-item__fill nutrition-item__fill--fiber"
+              style="width: {{math.progress(todayNutrition.total.fiber, nutritionTargets.fiber)}}%;"
+            ></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 餐食概览 -->
+    <view class="card meals-card">
+      <view class="card-title">今日餐食</view>
+      <view class="meals-grid">
+        <view
+          wx:for="{{meals}}"
+          wx:key="key"
+          class="meal-item"
+          data-meal-type="{{item.key}}"
+          bindtap="onMealTap"
+        >
+          <view class="meal-item__icon">{{item.icon}}</view>
+          <view class="meal-item__info">
+            <text class="meal-item__name">{{item.name}}</text>
+            <text class="meal-item__calories">{{item.total || 0}} kcal</text>
+          </view>
+          <view class="meal-item__arrow">›</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 热量来源 -->
+    <view wx:if="{{todayNutrition.total.calories > 0}}" class="card distribution-card">
+      <view class="card-title">热量来源分布</view>
+      <view class="distribution-list">
+        <view class="distribution-item">
+          <view class="distribution-item__color distribution-item__color--protein"></view>
+          <text class="distribution-item__name">蛋白质</text>
+          <text class="distribution-item__value">{{calorieDistribution.protein}}%</text>
+        </view>
+        <view class="distribution-item">
+          <view class="distribution-item__color distribution-item__color--carbs"></view>
+          <text class="distribution-item__name">碳水化合物</text>
+          <text class="distribution-item__value">{{calorieDistribution.carbs}}%</text>
+        </view>
+        <view class="distribution-item">
+          <view class="distribution-item__color distribution-item__color--fat"></view>
+          <text class="distribution-item__name">脂肪</text>
+          <text class="distribution-item__value">{{calorieDistribution.fat}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷操作 -->
+    <view class="card actions-card">
+      <view class="action-buttons">
+        <view class="action-btn action-btn--primary" bindtap="onAddFood">
+          <view class="action-btn__icon">+</view>
+          <text class="action-btn__text">添加食物</text>
+        </view>
+        <view class="action-btn" bindtap="onRecipes">
+          <view class="action-btn__icon">🍳</view>
+          <text class="action-btn__text">浏览食谱</text>
+        </view>
+        <view class="action-btn" bindtap="onProfile">
+          <view class="action-btn__icon">👤</view>
+          <text class="action-btn__text">个人资料</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

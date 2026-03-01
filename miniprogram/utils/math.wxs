@@ -1,0 +1,61 @@
+/**
+ * math.wxs - WXS数学工具模块
+ * 由于WXML模板不支持JavaScript的Math对象，
+ * 使用WXS模块提供数学计算功能
+ */
+
+/**
+ * 取最小值
+ */
+function min(a, b) {
+  return a < b ? a : b;
+}
+
+/**
+ * 取最大值
+ */
+function max(a, b) {
+  return a > b ? a : b;
+}
+
+/**
+ * 四舍五入
+ */
+function round(n) {
+  return Math.round(n);
+}
+
+/**
+ * 向下取整
+ */
+function floor(n) {
+  return Math.floor(n);
+}
+
+/**
+ * 计算百分比进度（限制在0-100之间）
+ * @param {number} current - 当前值
+ * @param {number} target - 目标值
+ * @return {number} 百分比 0-100
+ */
+function progress(current, target) {
+  if (!target || target <= 0) return 0;
+  var pct = (current / target) * 100;
+  return min(max(pct, 0), 100);
+}
+
+/**
+ * 限制数值范围
+ */
+function clamp(value, minVal, maxVal) {
+  return min(max(value, minVal), maxVal);
+}
+
+module.exports = {
+  min: min,
+  max: max,
+  round: round,
+  floor: floor,
+  progress: progress,
+  clamp: clamp
+};

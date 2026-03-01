@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/food-search/food-search",
+    "pages/meal-record/meal-record",
+    "pages/recipe-list/recipe-list",
+    "pages/recipe-detail/recipe-detail",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTitleText": "健康饮食",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/food-search/food-search",
+        "text": "食物",
+        "iconPath": "images/tab/food.png",
+        "selectedIconPath": "images/tab/food-active.png"
+      },
+      {
+        "pagePath": "pages/recipe-list/recipe-list",
+        "text": "食谱",
+        "iconPath": "images/tab/recipe.png",
+        "selectedIconPath": "images/tab/recipe-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/profile.png",
+        "selectedIconPath": "images/tab/profile-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "food-card": "/components/business/food-card/food-card",
+    "nutrition-bar": "/components/business/nutrition-bar/nutrition-bar",
+    "macro-ring": "/components/business/macro-ring/macro-ring"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

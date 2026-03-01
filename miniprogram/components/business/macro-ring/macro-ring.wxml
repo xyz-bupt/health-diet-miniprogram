@@ -1,0 +1,36 @@
+<!--macro-ring.wxml - 宏量营养素环形图组件模板-->
+<wxs src="../../../utils/math.wxs" module="math" />
+<view class="macro-ring" style="width: {{size}}px; height: {{size}}px;">
+  <!-- Canvas画布 -->
+  <canvas
+    canvas-id="macro-ring-canvas"
+    id="macro-ring-canvas"
+    class="macro-ring__canvas"
+    style="width: {{size}}px; height: {{size}}px;"
+  ></canvas>
+
+  <!-- 中心内容 -->
+  <view wx:if="{{showValue}}" class="macro-ring__center">
+    <view class="macro-ring__total">
+      <text class="macro-ring__total-value">{{total}}</text>
+      <text class="macro-ring__total-unit">g</text>
+    </view>
+    <view class="macro-ring__label">总摄入</view>
+  </view>
+</view>
+
+<!-- 图例 -->
+<view class="macro-ring__legend">
+  <view class="macro-ring__legend-item">
+    <view class="macro-ring__legend-color macro-ring__legend-color--protein"></view>
+    <text class="macro-ring__legend-label">蛋白质 {{math.round(proteinPercent)}}%</text>
+  </view>
+  <view class="macro-ring__legend-item">
+    <view class="macro-ring__legend-color macro-ring__legend-color--carbs"></view>
+    <text class="macro-ring__legend-label">碳水 {{math.round(carbsPercent)}}%</text>
+  </view>
+  <view class="macro-ring__legend-item">
+    <view class="macro-ring__legend-color macro-ring__legend-color--fat"></view>
+    <text class="macro-ring__legend-label">脂肪 {{math.round(fatPercent)}}%</text>
+  </view>
+</view>

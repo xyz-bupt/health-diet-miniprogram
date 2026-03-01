@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "健康饮食",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "food-card": "/components/business/food-card/food-card",
+    "nutrition-bar": "/components/business/nutrition-bar/nutrition-bar",
+    "macro-ring": "/components/business/macro-ring/macro-ring"
+  }
+}

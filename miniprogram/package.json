@@ -1,0 +1,20 @@
+{
+  "name": "health-diet-miniprogram",
+  "version": "1.0.0",
+  "description": "健康饮食小程序 - 帮助用户管理饮食健康",
+  "main": "app.js",
+  "scripts": {
+    "dev": "echo '开发中...'",
+    "build": "echo '构建中...'"
+  },
+  "keywords": [
+    "健康",
+    "饮食",
+    "营养",
+    "小程序"
+  ],
+  "author": "健康饮食团队",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

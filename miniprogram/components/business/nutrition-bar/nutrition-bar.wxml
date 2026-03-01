@@ -1,0 +1,26 @@
+<!--nutrition-bar.wxml - 营养进度条组件模板-->
+<wxs src="../../../utils/math.wxs" module="math" />
+<view class="nutrition-bar" bindtap="handleTap">
+  <!-- 标签行 -->
+  <view wx:if="{{label}}" class="nutrition-bar__header">
+    <view class="nutrition-bar__label-row">
+      <text class="nutrition-bar__label">{{label}}</text>
+      <text class="nutrition-bar__status nutrition-bar__status--{{status}}">{{statusText}}</text>
+    </view>
+    <view class="nutrition-bar__values">
+      <text class="nutrition-bar__value">{{displayValue}}</text>
+      <text class="nutrition-bar__unit">/{{target}}{{unit}}</text>
+      <text wx:if="{{showPercent}}" class="nutrition-bar__percentage nutrition-bar__percentage--{{status}}">
+        {{math.round(percentage)}}%
+      </text>
+    </view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="nutrition-bar__track" style="height: {{strokeWidth}}px;">
+    <view
+      class="nutrition-bar__fill nutrition-bar__fill--{{status}}"
+      style="width: {{percentage}}%; background-color: {{status === 'completed' || status === 'near' ? color : ''}};"
+    ></view>
+  </view>
+</view>

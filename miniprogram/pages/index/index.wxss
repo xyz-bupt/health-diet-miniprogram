@@ -1,0 +1,358 @@
+/**
+ * pages/index/index.wxss - 首页样式
+ */
+
+.page-container {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding-bottom: 120rpx;
+}
+
+/* 头部 */
+.index-header {
+  background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+  padding: 40rpx 32rpx 60rpx;
+  color: #ffffff;
+}
+
+.index-header__date {
+  font-size: 24rpx;
+  opacity: 0.9;
+  margin-bottom: 8rpx;
+}
+
+.index-header__title {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #E0E0E0;
+  border-top-color: #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 内容区域 */
+.index-content {
+  padding: 0 24rpx;
+  margin-top: -40rpx;
+}
+
+/* 健康评分卡片 */
+.score-card {
+  background: linear-gradient(135deg, #ffffff 0%, #F9F9F9 100%);
+  box-shadow: 0 4rpx 16rpx rgba(76, 175, 80, 0.15);
+}
+
+.score-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.score-card__title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.score-card__target {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.score-card__body {
+  display: flex;
+  align-items: center;
+}
+
+.score-ring {
+  width: 160rpx;
+  height: 160rpx;
+  position: relative;
+}
+
+.score-ring__inner {
+  width: 100%;
+  height: 100%;
+  border: 8rpx solid #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-ring__value {
+  font-size: 56rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-ring__label {
+  font-size: 22rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
+.score-info {
+  flex: 1;
+  margin-left: 40rpx;
+}
+
+.score-info__item {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+}
+
+.score-info__item:last-child {
+  margin-bottom: 0;
+}
+
+.score-info__label {
+  font-size: 24rpx;
+  color: #999999;
+  width: 80rpx;
+}
+
+.score-info__value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-right: 4rpx;
+}
+
+.score-info__value--warning {
+  color: #F44336;
+}
+
+.score-info__unit {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+/* 营养素进度 */
+.nutrition-list {
+  padding: 0 8rpx;
+}
+
+.nutrition-item {
+  margin-bottom: 24rpx;
+}
+
+.nutrition-item:last-child {
+  margin-bottom: 0;
+}
+
+.nutrition-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.nutrition-item__name {
+  font-size: 26rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.nutrition-item__values {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.nutrition-item__bar {
+  height: 16rpx;
+  background-color: #F0F0F0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.nutrition-item__fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.nutrition-item__fill--protein {
+  background-color: #4ECDC4;
+}
+
+.nutrition-item__fill--carbs {
+  background-color: #FFE66D;
+}
+
+.nutrition-item__fill--fat {
+  background-color: #95E1D3;
+}
+
+.nutrition-item__fill--fiber {
+  background-color: #DDA0DD;
+}
+
+/* 餐食概览 */
+.meals-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+  transition: background-color 0.2s ease;
+}
+
+.meal-item:active {
+  background-color: #F0F0F0;
+}
+
+.meal-item__icon {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 12rpx;
+}
+
+.meal-item__info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.meal-item__name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 4rpx;
+}
+
+.meal-item__calories {
+  display: block;
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.meal-item__arrow {
+  font-size: 40rpx;
+  color: #CCCCCC;
+}
+
+/* 热量来源分布 */
+.distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.distribution-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.distribution-item__color {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 6rpx;
+}
+
+.distribution-item__color--protein {
+  background-color: #4ECDC4;
+}
+
+.distribution-item__color--carbs {
+  background-color: #FFE66D;
+}
+
+.distribution-item__color--fat {
+  background-color: #95E1D3;
+}
+
+.distribution-item__name {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.distribution-item__value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+/* 快捷操作 */
+.action-buttons {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx 16rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+  transition: all 0.2s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+  background-color: #F0F0F0;
+}
+
+.action-btn--primary {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+}
+
+.action-btn--primary .action-btn__icon,
+.action-btn--primary .action-btn__text {
+  color: #ffffff;
+}
+
+.action-btn__icon {
+  font-size: 36rpx;
+  margin-bottom: 12rpx;
+}
+
+.action-btn__text {
+  font-size: 24rpx;
+  color: #666666;
+}

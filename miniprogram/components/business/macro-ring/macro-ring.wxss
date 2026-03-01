@@ -1,0 +1,85 @@
+/**
+ * macro-ring.wxss - 宏量营养素环形图组件样式
+ */
+
+.macro-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macro-ring__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.macro-ring__center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.macro-ring__total {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 8rpx;
+}
+
+.macro-ring__total-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #333333;
+  line-height: 1;
+}
+
+.macro-ring__total-unit {
+  font-size: 24rpx;
+  color: #999999;
+  margin-left: 4rpx;
+}
+
+.macro-ring__label {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+/* 图例 */
+.macro-ring__legend {
+  display: flex;
+  justify-content: center;
+  gap: 24rpx;
+  margin-top: 16rpx;
+}
+
+.macro-ring__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.macro-ring__legend-color {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+}
+
+.macro-ring__legend-color--protein {
+  background-color: #4ECDC4;
+}
+
+.macro-ring__legend-color--carbs {
+  background-color: #FFE66D;
+}
+
+.macro-ring__legend-color--fat {
+  background-color: #95E1D3;
+}
+
+.macro-ring__legend-label {
+  font-size: 22rpx;
+  color: #666666;
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "食物搜索",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "food-card": "/components/business/food-card/food-card"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "餐食记录",
+  "usingComponents": {
+    "food-card": "/components/business/food-card/food-card"
+  }
+}

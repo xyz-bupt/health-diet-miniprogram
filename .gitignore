@@ -1,0 +1,33 @@
+# 微信小程序小程序
+miniprogram/.DS_Store
+
+# 微信开发者工具缓存
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 日志文件
+logs/
+*.log
+
+# 操作系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.temp
+*.cache
+
+# 构建输出
+dist/
+build/
