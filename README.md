@@ -15,14 +15,12 @@
 - **餐食记录**: 记录每日三餐，自动计算营养摄入
 - **食谱推荐**: 30+ 道健康食谱，支持按难度、热量筛选
 - **健康目标**: 支持减重、维持、增重三种目标的营养计划
-
-## 未来规划
-
-- **AI大模型接入**: 计划接入 Claude/GPT 等大语言模型，实现：
-  - 智能食物识别与营养分析
-  - 个性化膳食建议生成
-  - 基于用户偏好的食谱推荐
-  - 营养健康问答助手
+- **AI饮食专家** ✨: 接入大模型 API，提供个性化食谱生成
+  - 支持多种 AI 模型（DeepSeek、OpenAI、Claude、GPTDen、Moonshot 等）
+  - 用户自行配置 API 密钥，安全可控
+  - 智能生成一日/一周个性化食谱计划
+  - 根据用户目标（减重/维持/增重）自动调整营养配比
+  - 提供专业营养建议和食材用量指导
 
 ## 快速开始
 
@@ -48,10 +46,23 @@ cd health-diet-miniprogram
 health-diet-miniprogram/
 ├── miniprogram/              # 小程序根目录
 │   ├── pages/               # 页面
+│   │   ├── index/           # 首页
+│   │   ├── food-search/     # 食物搜索
+│   │   ├── meal-record/     # 餐食记录
+│   │   ├── recipe-list/     # 食谱列表
+│   │   ├── ai-recipe/       # AI食谱生成 ✨
+│   │   └── profile/         # 个人中心
 │   ├── components/          # 组件
 │   ├── data/                # 数据层（食物/食谱数据库）
-│   ├── services/            # 服务层（业务逻辑）
-│   ├── utils/               # 工具层（计算函数）
+│   ├── services/            # 服务层
+│   │   ├── food-service.js
+│   │   ├── recipe-service.js
+│   │   └── ai-service.js    # AI服务 ✨
+│   ├── utils/               # 工具层
+│   │   ├── nutrition-calculator.js
+│   │   ├── constants.js
+│   │   ├── helpers.js
+│   │   └── ai-client.js     # AI客户端 ✨
 │   ├── images/              # 资源文件
 │   ├── app.js               # 应用入口
 │   └── app.json             # 全局配置
@@ -65,8 +76,9 @@ health-diet-miniprogram/
 | 首页 | 今日营养摄入概览、健康评分 |
 | 食物搜索 | 搜索200+种食物、按分类筛选 |
 | 餐食记录 | 记录每餐食物、计算营养 |
-| 食谱列表 | 浏览30+道健康食谱 |
-| 个人中心 | 个人资料、BMI/TDEE计算 |
+| 食谱列表 | 浏览30+道健康食谱、AI生成入口 |
+| AI食谱 | AI生成个性化一日/一周食谱计划 |
+| 个人中心 | 个人资料、BMI/TDEE计算、AI配置 |
 
 ## 技术栈
 
