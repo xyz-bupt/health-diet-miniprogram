@@ -1,0 +1,445 @@
+/* ai-recipe.wxss - AI食谱生成结果页面样式 */
+
+.page-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+/* 页面标题 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  background: #4CAF50;
+  color: white;
+}
+
+.header-back {
+  padding: 10rpx;
+}
+
+.back-icon {
+  font-size: 32rpx;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.header-action {
+  padding: 10rpx;
+}
+
+.history-icon {
+  font-size: 40rpx;
+}
+
+/* 生成中状态 */
+.generating-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 60rpx;
+}
+
+.ai-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+.ai-brain {
+  font-size: 120rpx;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.thinking-dots {
+  display: flex;
+  gap: 10rpx;
+  margin-top: 30rpx;
+}
+
+.thinking-dots .dot {
+  width: 16rpx;
+  height: 16rpx;
+  background: #4CAF50;
+  border-radius: 50%;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.thinking-dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinking-dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.generating-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.generating-subtext {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 成功状态 */
+.success-state {
+  padding: 30rpx;
+}
+
+/* 营养建议卡片 */
+.nutrition-advice-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  color: white;
+}
+
+.advice-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.advice-icon {
+  font-size: 48rpx;
+  margin-right: 16rpx;
+}
+
+.advice-title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.advice-content {
+  font-size: 28rpx;
+  line-height: 1.6;
+  opacity: 0.95;
+  margin-bottom: 20rpx;
+}
+
+.generated-time {
+  font-size: 24rpx;
+  opacity: 0.7;
+}
+
+/* 餐食部分 */
+.meal-section {
+  margin-bottom: 30rpx;
+}
+
+.meal-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+}
+
+.meal-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+.meal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 食谱卡片 */
+.meal-recipe-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.recipe-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.recipe-nutrition {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.nutrition-item {
+  font-size: 24rpx;
+  color: #4CAF50;
+}
+
+.recipe-ingredients {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.ingredients-label {
+  color: #999;
+}
+
+.ingredients-list {
+  color: #333;
+}
+
+.ingredients-more {
+  color: #4CAF50;
+}
+
+.recipe-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  padding: 16rpx 32rpx;
+  background: #4CAF50;
+  color: white;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+/* 一周食谱 */
+.weekly-meals {
+  padding-bottom: 30rpx;
+}
+
+.day-selector {
+  margin-bottom: 30rpx;
+}
+
+.day-scroll {
+  white-space: nowrap;
+}
+
+.day-tab {
+  display: inline-block;
+  padding: 20rpx 40rpx;
+  margin-right: 20rpx;
+  background: white;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.day-tab--active {
+  background: #4CAF50;
+  color: white;
+}
+
+.day-meals {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+}
+
+.day-label {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #4CAF50;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.meal-content {
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.meal-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.meal-calories {
+  font-size: 24rpx;
+  color: #4CAF50;
+  margin-bottom: 16rpx;
+}
+
+.meal-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.ingredient-item {
+  font-size: 24rpx;
+  color: #666;
+  background: white;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.meal-steps {
+  margin-top: 20rpx;
+}
+
+.step-item {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10rpx;
+}
+
+/* 当日总计 */
+.day-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 16rpx;
+  margin-top: 30rpx;
+  color: white;
+}
+
+.total-label {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.total-values {
+  display: flex;
+  gap: 24rpx;
+}
+
+.total-item {
+  font-size: 24rpx;
+}
+
+/* 底部操作栏 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  background: white;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.action-btn-primary,
+.action-btn-secondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+.action-btn-primary {
+  background: #4CAF50;
+  color: white;
+}
+
+.action-btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-icon {
+  margin-right: 8rpx;
+  font-size: 32rpx;
+}
+
+/* 错误状态 */
+.error-state,
+.unconfigured-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 60rpx;
+}
+
+.error-icon,
+.config-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.error-title,
+.config-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.error-message,
+.config-desc {
+  font-size: 28rpx;
+  color: #666;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.error-actions,
+.config-actions {
+  display: flex;
+  gap: 30rpx;
+}
+
+.error-btn,
+.config-btn {
+  padding: 24rpx 60rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.error-btn.primary,
+.config-btn.primary {
+  background: #4CAF50;
+  color: white;
+}

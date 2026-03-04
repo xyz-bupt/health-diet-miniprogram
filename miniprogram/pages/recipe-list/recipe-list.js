@@ -255,6 +255,62 @@ Page({
   },
 
   /**
+   * AI生成食谱
+   */
+  onAIGenerate() {
+    const app = getApp();
+
+    // 从 storage 加载最新的 AI 配置
+    let aiConfig = app.globalData.aiConfig || {};
+    try {
+      const storedConfig = wx.getStorageSync('ai_config');
+      if (storedConfig) {
+        // 兼容旧字段名
+        if (storedConfig.apiBaseUrl && !storedConfig.baseUrl) {
+          storedConfig.baseUrl = storedConfig.apiBaseUrl;
+        }
+        aiConfig = {
+          provider: storedConfig.provider || 'deepseek',
+          apiKey: storedConfig.apiKey || '',
+          baseUrl: storedConfig.baseUrl || '',
+          model: storedConfig.model || ''
+        };
+      }
+    } catch (e) {
+      console.error('读取AI配置失败:', e);
+    }
+
+    // 检查是否配置了AI
+    if (!aiConfig.apiKey) {
+      wx.showModal({
+        title: '提示',
+        content: '请先在个人中心配置AI API密钥',
+        confirmText: '去配置',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/profile/profile'
+            });
+          }
+        }
+      });
+      return;
+    }
+
+    // 显示选择弹窗
+    wx.showActionSheet({
+      itemList: ['生成一日食谱', '生成一周食谱'],
+      success: (res) => {
+        const generateType = res.tapIndex === 0 ? 'daily' : 'weekly';
+        wx.navigateTo({
+          url: `/pages/ai-recipe/ai-recipe?type=${generateType}`
+        });
+      }
+    });
+  },
+
+  /**
    * 下拉刷新
    */
   onRefresh() {

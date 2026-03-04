@@ -50,6 +50,57 @@
   font-size: 28rpx;
 }
 
+/* AI生成食谱入口 */
+.ai-generate-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 24rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.3);
+}
+
+.ai-generate-banner__left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.ai-generate-banner__icon {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 36rpx;
+}
+
+.ai-generate-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.ai-generate-banner__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ai-generate-banner__desc {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ai-generate-banner__arrow {
+  font-size: 40rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* 分类标签 */
 .category-tabs {
   display: flex;

@@ -1,0 +1,180 @@
+<!-- ai-recipe.wxml - AI食谱生成结果页面 -->
+<view class="page-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <view class="header-back" bindtap="onBack">
+      <text class="back-icon">‹ 返回</text>
+    </view>
+    <text class="header-title">AI{{generateType === 'daily' ? '一日' : '一周'}}食谱</text>
+    <view class="header-action" bindtap="onViewHistory">
+      <text class="history-icon">📋</text>
+    </view>
+  </view>
+
+  <!-- 生成中状态 -->
+  <view wx:if="{{status === 'generating'}}" class="generating-state">
+    <view class="ai-animation">
+      <view class="ai-brain">🧠</view>
+      <view class="thinking-dots">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+    </view>
+    <text class="generating-text">AI营养师正在为您定制食谱...</text>
+    <text class="generating-subtext">根据您的目标：{{userProfile.goal === 'lose' ? '减重' : userProfile.goal === 'gain' ? '增重' : '维持'}}</text>
+  </view>
+
+  <!-- 成功状态 -->
+  <view wx:elif="{{status === 'success'}}" class="success-state">
+    <!-- 营养建议 -->
+    <view class="nutrition-advice-card">
+      <view class="advice-header">
+        <text class="advice-icon">💡</text>
+        <text class="advice-title">营养师建议</text>
+      </view>
+      <text class="advice-content">{{nutritionAdvice}}</text>
+      <text class="generated-time">生成时间：{{generatedAt}}</text>
+    </view>
+
+    <!-- 一日食谱 -->
+    <view wx:if="{{generateType === 'daily'}}" class="daily-meals">
+      <view class="meal-section" wx:for="{{['breakfast', 'lunch', 'dinner', 'snack']}}" wx:key="*this" wx:for-item="mealType">
+        <view class="meal-header">
+          <text class="meal-icon">
+            {{mealType === 'breakfast' ? '🌅' : mealType === 'lunch' ? '☀️' : mealType === 'dinner' ? '🌙' : '🍎'}}
+          </text>
+          <text class="meal-title">
+            {{mealType === 'breakfast' ? '早餐' : mealType === 'lunch' ? '午餐' : mealType === 'dinner' ? '晚餐' : '加餐'}}
+          </text>
+        </view>
+
+        <view class="meal-recipes">
+          <view
+            class="meal-recipe-card"
+            wx:for="{{recipes}}"
+            wx:key="id"
+            wx:for-item="recipe"
+            wx:if="{{recipe.category === mealType}}"
+            data-recipe="{{recipe}}"
+            bindtap="onRecipeTap"
+          >
+            <view class="recipe-name">{{recipe.name}}</view>
+            <view class="recipe-nutrition">
+              <text class="nutrition-item">{{recipe.calories}}kcal</text>
+              <text class="nutrition-item">蛋白质{{recipe.protein}}g</text>
+              <text class="nutrition-item">碳水{{recipe.carbs}}g</text>
+            </view>
+            <view class="recipe-ingredients" wx:if="{{recipe.ingredients.length > 0}}">
+              <text class="ingredients-label">食材：</text>
+              <text class="ingredients-list">{{recipe.ingredients[0].name}}</text>
+              <text wx:if="{{recipe.ingredients.length > 1}}" class="ingredients-more">等{{recipe.ingredients.length}}种</text>
+            </view>
+            <view class="recipe-actions">
+              <view
+                class="action-btn"
+                data-recipe="{{recipe}}"
+                catchtap="onSaveToToday"
+                data-amount="100"
+              >
+                + 添加到今日
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 一周食谱 -->
+    <view wx:else class="weekly-meals">
+      <view class="day-selector">
+        <scroll-view scroll-x class="day-scroll">
+          <view
+            class="day-tab {{currentDay === index ? 'day-tab--active' : ''}}"
+            wx:for="{{result.days}}"
+            wx:key="index"
+            bindtap="onDayChange"
+            data-index="{{index}}"
+          >
+            {{item.date}}
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="day-meals">
+        <view class="day-label">{{result.days[currentDay].date}}</view>
+
+        <view class="meal-section" wx:for="{{['breakfast', 'lunch', 'dinner', 'snack']}}" wx:key="*this" wx:for-item="mealType">
+          <view class="meal-header">
+            <text class="meal-icon">
+              {{mealType === 'breakfast' ? '🌅' : mealType === 'lunch' ? '☀️' : mealType === 'dinner' ? '🌙' : '🍎'}}
+            </text>
+            <text class="meal-title">
+              {{mealType === 'breakfast' ? '早餐' : mealType === 'lunch' ? '午餐' : mealType === 'dinner' ? '晚餐' : '加餐'}}
+            </text>
+          </view>
+
+          <view class="meal-content" wx:if="{{result.days[currentDay].meals[mealType]}}">
+            <view class="meal-name">{{result.days[currentDay].meals[mealType].name}}</view>
+            <view class="meal-calories">{{result.days[currentDay].meals[mealType].calories}} kcal</view>
+            <view class="meal-ingredients" wx:if="{{result.days[currentDay].meals[mealType].ingredients}}">
+              <text class="ingredient-item" wx:for="{{result.days[currentDay].meals[mealType].ingredients}}" wx:key="*this">
+                {{item}}
+              </text>
+            </view>
+            <view class="meal-steps" wx:if="{{result.days[currentDay].meals[mealType].steps}}">
+              <text class="step-item" wx:for="{{result.days[currentDay].meals[mealType].steps}}" wx:key="*this" wx:for-index="stepIdx">
+                {{stepIdx + 1}}. {{item}}
+              </text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 当日总计 -->
+        <view class="day-total">
+          <view class="total-label">当日总计</view>
+          <view class="total-values">
+            <text class="total-item">{{result.days[currentDay].dailyTotal.calories}}kcal</text>
+            <text class="total-item">蛋白质{{result.days[currentDay].dailyTotal.protein}}g</text>
+            <text class="total-item">碳水{{result.days[currentDay].dailyTotal.carbs}}g</text>
+            <text class="total-item">脂肪{{result.days[currentDay].dailyTotal.fat}}g</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-actions">
+      <view class="action-btn-secondary" bindtap="onRegenerate">
+        <text class="btn-icon">🔄</text>
+        <text>重新生成</text>
+      </view>
+      <view class="action-btn-primary" bindtap="onBack">
+        <text class="btn-icon">✓</text>
+        <text>完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view wx:elif="{{status === 'error'}}" class="error-state">
+    <view class="error-icon">⚠️</view>
+    <text class="error-title">生成失败</text>
+    <text class="error-message">{{error}}</text>
+    <view class="error-actions">
+      <view class="error-btn" bindtap="onBack">返回</view>
+      <view class="error-btn primary" bindtap="onRegenerate">重试</view>
+    </view>
+  </view>
+
+  <!-- 未配置状态 -->
+  <view wx:else class="unconfigured-state">
+    <view class="config-icon">🔑</view>
+    <text class="config-title">请先配置AI</text>
+    <text class="config-desc">在个人中心设置API密钥后即可使用AI生成食谱</text>
+    <view class="config-actions">
+      <view class="config-btn" bindtap="onBack">返回</view>
+      <view class="config-btn primary" bindtap="goToSettings">去设置</view>
+    </view>
+  </view>
+</view>

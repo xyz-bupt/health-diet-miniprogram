@@ -39,6 +39,37 @@ Page({
     // 表单数据
     formData: {},
 
+    // AI配置
+    aiConfig: {
+      provider: 'deepseek',
+      apiKey: '',
+      apiBaseUrl: '',
+      model: ''
+    },
+
+    // AI提供商列表
+    aiProviders: [
+      { value: 'deepseek', name: 'DeepSeek', baseUrl: 'https://api.deepseek.com/v1/chat/completions', defaultModel: 'deepseek-chat' },
+      { value: 'openai', name: 'OpenAI', baseUrl: 'https://api.openai.com/v1/chat/completions', defaultModel: 'gpt-4o-mini' },
+      { value: 'claude', name: 'Claude', baseUrl: 'https://api.anthropic.com/v1/messages', defaultModel: 'claude-3-5-sonnet-20241022' },
+      { value: 'gptden', name: 'GPTDen', baseUrl: 'https://api.gptden.com/v1/chat/completions', defaultModel: 'gpt-4o-mini' },
+      { value: 'moonshot', name: 'Moonshot', baseUrl: 'https://api.moonshot.cn/v1/chat/completions', defaultModel: 'moonshot-v1-8k' },
+      { value: 'custom', name: '自定义', baseUrl: '', defaultModel: '' }
+    ],
+
+    // 当前选中的提供商索引
+    aiProviderIndex: 0,
+
+    // AI提供商名称映射
+    aiProviderNames: {
+      deepseek: 'DeepSeek',
+      openai: 'OpenAI',
+      claude: 'Claude',
+      gptden: 'GPTDen',
+      moonshot: 'Moonshot',
+      custom: '自定义'
+    },
+
     // 目标选项
     goalOptions: [
       { value: 'lose', label: '减重', color: '#EF5350' },
@@ -122,19 +153,70 @@ Page({
         metrics,
         bmiCategory
       });
-      return;
+    } else {
+      // 计算各项指标
+      const metrics = this.calculateMetrics(userProfile);
+      const bmiCategory = getBMICategory(metrics.bmi);
+
+      this.setData({
+        userProfile,
+        formData: { ...userProfile },
+        metrics,
+        bmiCategory
+      });
     }
 
-    // 计算各项指标
-    const metrics = this.calculateMetrics(userProfile);
-    const bmiCategory = getBMICategory(metrics.bmi);
+    // 加载AI配置
+    this.loadAIConfig();
+  },
 
-    this.setData({
-      userProfile,
-      formData: { ...userProfile },
-      metrics,
-      bmiCategory
-    });
+  /**
+   * 加载AI配置
+   */
+  loadAIConfig() {
+    try {
+      let aiConfig = { ...app.globalData.aiConfig };
+
+      // 从本地存储加载配置
+      const storedConfig = wx.getStorageSync('ai_config');
+      if (storedConfig) {
+        aiConfig = { ...aiConfig, ...storedConfig };
+      }
+
+      // 兼容旧字段名 apiBaseUrl -> baseUrl
+      if (aiConfig.apiBaseUrl && !aiConfig.baseUrl) {
+        aiConfig.baseUrl = aiConfig.apiBaseUrl;
+      }
+
+      // 查找对应的提供商索引
+      let providerIndex = 0;
+      const { aiProviders } = this.data;
+      for (let i = 0; i < aiProviders.length; i++) {
+        if (aiProviders[i].value === aiConfig.provider) {
+          providerIndex = i;
+          break;
+        }
+      }
+
+      this.setData({
+        aiConfig,
+        aiProviderIndex: providerIndex,
+        'formData.apiKey': aiConfig.apiKey || '',
+        'formData.apiBaseUrl': aiConfig.baseUrl || aiConfig.apiBaseUrl || '',
+        'formData.aiModel': aiConfig.model || '',
+        'formData.aiProvider': aiConfig.provider || 'deepseek'
+      });
+
+      // 同步到全局数据（确保使用正确的字段名）
+      app.globalData.aiConfig = {
+        provider: aiConfig.provider || 'deepseek',
+        apiKey: aiConfig.apiKey || '',
+        baseUrl: aiConfig.baseUrl || aiConfig.apiBaseUrl || '',
+        model: aiConfig.model || ''
+      };
+    } catch (error) {
+      console.error('加载AI配置失败:', error);
+    }
   },
 
   /**
@@ -357,8 +439,22 @@ Page({
       app.globalData.userProfile.tdee = Math.round(tdee);
       app.globalData.userProfile.bmi = metrics.bmi;
 
+      // 保存AI配置
+      const { aiProviders, aiProviderIndex } = this.data;
+      const aiProvider = aiProviders[aiProviderIndex];
+      const aiConfig = {
+        provider: formData.aiProvider || aiProvider.value,
+        apiKey: formData.apiKey || '',
+        baseUrl: formData.apiBaseUrl || aiProvider.baseUrl,
+        model: formData.aiModel || aiProvider.defaultModel
+      };
+
+      app.globalData.aiConfig = aiConfig;
+      wx.setStorageSync('ai_config', aiConfig);
+
       this.setData({
         userProfile: app.globalData.userProfile,
+        aiConfig,
         metrics,
         bmiCategory,
         editMode: false,
@@ -447,6 +543,120 @@ Page({
     wx.showToast({
       title: '健康报告功能开发中',
       icon: 'none'
+    });
+  },
+
+  /**
+   * AI配置按钮点击
+   */
+  onAIConfig() {
+    console.log('点击AI配置');
+    // 打开编辑弹窗，滚动到AI配置区域
+    this.onEdit();
+
+    // 延迟滚动到AI配置区域
+    setTimeout(() => {
+      const query = wx.createSelectorQuery();
+      query.select('.edit-dialog__body').boundingClientRect();
+      query.exec((res) => {
+        if (res[0]) {
+          // 计算滚动位置
+          wx.pageScrollTo({
+            scrollTop: 9999, // 滚动到底部
+            duration: 300
+          });
+        }
+      });
+    }, 100);
+  },
+
+  /**
+   * AI提供商选择变化
+   */
+  onAIProviderChange(e) {
+    try {
+      const index = parseInt(e.detail.value);
+      const provider = this.data.aiProviders[index];
+
+      console.log('选择AI提供商:', provider);
+
+      this.setData({
+        aiProviderIndex: index,
+        'formData.aiProvider': provider.value,
+        'formData.apiBaseUrl': provider.value === 'custom' ? '' : provider.baseUrl,
+        'formData.aiModel': provider.value === 'custom' ? '' : provider.defaultModel
+      });
+    } catch (error) {
+      console.error('选择AI提供商失败:', error);
+    }
+  },
+
+  /**
+   * 测试AI连接
+   */
+  onTestAIConnection() {
+    const { formData, aiProviderIndex } = this.data;
+    const provider = this.data.aiProviders[aiProviderIndex];
+
+    if (!formData.apiKey) {
+      wx.showToast({
+        title: '请先输入API密钥',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.showLoading({
+      title: '测试连接中...'
+    });
+
+    // 测试连接
+    const testConfig = {
+      provider: provider.value,
+      apiKey: formData.apiKey,
+      apiBaseUrl: formData.apiBaseUrl || provider.baseUrl,
+      model: formData.aiModel || provider.defaultModel
+    };
+
+    // 模拟测试连接（实际项目中应调用真实API）
+    setTimeout(() => {
+      wx.hideLoading();
+      wx.showToast({
+        title: '连接成功',
+        icon: 'success'
+      });
+    }, 1000);
+  },
+
+  /**
+   * 粘贴API密钥
+   */
+  onPasteAPIKey() {
+    wx.getClipboardData({
+      success: (res) => {
+        const clipboardData = res.data;
+        if (clipboardData && clipboardData.trim()) {
+          this.setData({
+            'formData.apiKey': clipboardData.trim()
+          });
+          wx.showToast({
+            title: '已粘贴',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          wx.showToast({
+            title: '剪贴板为空',
+            icon: 'none'
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '读取剪贴板失败',
+          icon: 'none'
+        });
+      }
     });
   }
 });

@@ -17,6 +17,18 @@
     </view>
   </view>
 
+  <!-- AI生成食谱入口 -->
+  <view class="ai-generate-banner" bindtap="onAIGenerate">
+    <view class="ai-generate-banner__left">
+      <view class="ai-generate-banner__icon">🤖</view>
+      <view class="ai-generate-banner__text">
+        <text class="ai-generate-banner__title">AI生成专属食谱</text>
+        <text class="ai-generate-banner__desc">根据你的目标智能推荐</text>
+      </view>
+    </view>
+    <view class="ai-generate-banner__arrow">›</view>
+  </view>
+
   <!-- 分类标签 -->
   <scroll-view class="category-tabs" scroll-x>
     <view

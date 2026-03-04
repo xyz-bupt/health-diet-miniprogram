@@ -70,6 +70,14 @@ App({
     config: {
       appVersion: '1.0.0',
       lastUpdateDate: '2024-01-01'
+    },
+
+    // AI配置
+    aiConfig: {
+      provider: 'deepseek',
+      apiKey: '',
+      baseUrl: '',
+      model: ''
     }
   },
 
@@ -145,6 +153,21 @@ App({
         if (todayNutritionData.date === today) {
           this.globalData.todayNutrition = todayNutritionData;
         }
+      }
+
+      // 加载AI配置
+      const aiConfigData = wx.getStorageSync('ai_config');
+      if (aiConfigData) {
+        // 兼容旧字段名 apiBaseUrl -> baseUrl
+        if (aiConfigData.apiBaseUrl && !aiConfigData.baseUrl) {
+          aiConfigData.baseUrl = aiConfigData.apiBaseUrl;
+        }
+        this.globalData.aiConfig = {
+          provider: aiConfigData.provider || 'deepseek',
+          apiKey: aiConfigData.apiKey || '',
+          baseUrl: aiConfigData.baseUrl || '',
+          model: aiConfigData.model || ''
+        };
       }
 
       console.log('用户数据加载成功');

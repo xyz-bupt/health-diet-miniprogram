@@ -577,3 +577,85 @@
   background-color: #4CAF50;
   color: #ffffff;
 }
+
+/* AI配置样式 */
+.settings-item__right {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.settings-item__status {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.form-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 80rpx;
+  background-color: #F5F5F5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.picker-arrow {
+  font-size: 32rpx;
+  color: #CCCCCC;
+}
+
+.ai-config-tips {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  padding: 20rpx;
+  background-color: #FFF8E1;
+  border-radius: 12rpx;
+  margin-top: 16rpx;
+}
+
+.tips-icon {
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+.tips-text {
+  font-size: 22rpx;
+  color: #8D6E63;
+  line-height: 1.5;
+}
+
+/* 输入框带操作按钮 */
+.input-with-action {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.form-item__input--with-btn {
+  flex: 1;
+}
+
+.input-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 0 20rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.input-action-btn__icon {
+  font-size: 24rpx;
+}
+
+.input-action-btn__text {
+  font-size: 24rpx;
+  color: #ffffff;
+}

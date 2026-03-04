@@ -140,6 +140,16 @@
   <!-- 设置列表 -->
   <view class="settings-section">
     <view class="settings-list">
+      <view class="settings-item" bindtap="onAIConfig">
+        <view class="settings-item__left">
+          <text class="settings-item__icon">🤖</text>
+          <text class="settings-item__label">AI配置</text>
+        </view>
+        <view class="settings-item__right">
+          <text class="settings-item__status">{{aiConfig.provider ? aiProviderNames[aiConfig.provider] || '未设置' : '未设置'}}</text>
+          <text class="settings-item__arrow">›</text>
+        </view>
+      </view>
       <view class="settings-item" bindtap="onViewReport">
         <view class="settings-item__left">
           <text class="settings-item__icon">📊</text>
@@ -294,6 +304,74 @@
                 {{item.label}}
               </view>
             </view>
+          </view>
+        </view>
+
+        <!-- AI配置 -->
+        <view class="form-section">
+          <text class="form-section__title">AI配置</text>
+
+          <view class="form-item">
+            <text class="form-item__label">AI提供商</text>
+            <picker
+              mode="selector"
+              range="{{aiProviders}}"
+              range-key="name"
+              value="{{aiProviderIndex}}"
+              bindchange="onAIProviderChange"
+            >
+              <view class="form-picker">
+                {{aiProviders[aiProviderIndex].name}}
+                <text class="picker-arrow">›</text>
+              </view>
+            </picker>
+          </view>
+
+          <view class="form-item">
+            <text class="form-item__label">API密钥</text>
+            <view class="input-with-action">
+              <input
+                class="form-item__input form-item__input--with-btn"
+                type="text"
+                placeholder="请输入API密钥"
+                value="{{formData.apiKey}}"
+                data-field="apiKey"
+                bindinput="onInputChange"
+              />
+              <view class="input-action-btn" bindtap="onPasteAPIKey">
+                <text class="input-action-btn__icon">📋</text>
+                <text class="input-action-btn__text">粘贴</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="form-item" wx:if="{{formData.aiProvider === 'custom'}}">
+            <text class="form-item__label">API地址</text>
+            <input
+              class="form-item__input"
+              type="text"
+              placeholder="https://api.example.com/v1/chat/completions"
+              value="{{formData.apiBaseUrl}}"
+              data-field="apiBaseUrl"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="form-item" wx:if="{{formData.aiProvider !== 'custom'}}">
+            <text class="form-item__label">模型名称</text>
+            <input
+              class="form-item__input"
+              type="text"
+              placeholder="留空使用默认模型"
+              value="{{formData.aiModel}}"
+              data-field="aiModel"
+              bindinput="onInputChange"
+            />
+          </view>
+
+          <view class="ai-config-tips">
+            <text class="tips-icon">💡</text>
+            <text class="tips-text">支持DeepSeek、OpenAI、Claude、GPTDen、Moonshot等。通过云函数转发，无需配置域名。</text>
           </view>
         </view>
       </scroll-view>

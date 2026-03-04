@@ -5,6 +5,7 @@
     "pages/meal-record/meal-record",
     "pages/recipe-list/recipe-list",
     "pages/recipe-detail/recipe-detail",
+    "pages/ai-recipe/ai-recipe",
     "pages/profile/profile"
   ],
   "window": {
