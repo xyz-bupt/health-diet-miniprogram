@@ -1,6 +1,6 @@
 # 健康饮食微信小程序 (Health Diet WeChat Mini Program)
 
-> 一个功能完整的健康饮食管理微信小程序，提供热量分析、营养追踪和健康食谱推荐功能。
+> 一个功能完整的健康饮食管理微信小程序，提供热量分析、营养追踪和健康食谱推荐功能。（纯前端，学习用品）
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
