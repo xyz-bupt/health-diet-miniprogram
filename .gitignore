@@ -31,3 +31,6 @@ Thumbs.db
 # 构建输出
 dist/
 build/
+
+# 微信小程序敏感配置（包含 appid 等）
+project.private.config.json
